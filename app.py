@@ -5,17 +5,19 @@ import os
 
 st.set_page_config(page_title="🥃 Jeopardy x bOurBon biChessss", layout="wide")
 
+# read in csv files from clues folder
 @st.cache_data
 def load_clues(folder="clues"):
     files = [f for f in os.listdir(folder) if f.endswith(".csv")]
     df_list = [pd.read_csv(os.path.join(folder, f)) for f in files]
     return pd.concat(df_list, ignore_index=True)
 
+# store clues in dataframe + identify unique categories + sort by increasing point value
 df = load_clues("clues")
 categories = df["Category"].unique()
 values = sorted(df["Value"].unique())
 
-# Initialize session state
+# session states -- initialize
 if "selected_clue" not in st.session_state:
     st.session_state.selected_clue = None
 if "show_answer" not in st.session_state:
@@ -23,15 +25,18 @@ if "show_answer" not in st.session_state:
 if "used_clues" not in st.session_state:
     st.session_state.used_clues = {}
 
+# titleeee
 st.title("🥃 Jeopardy x bOurBon biChessss 🎉")
 
+# for UNANSWERED CLUES:
 if st.session_state.selected_clue is not None:
     row = df.loc[st.session_state.selected_clue]
 
-    st.markdown("## 🧐 Jeopardy Clue")
-    st.markdown("---")
-    st.markdown(f"<div style='font-size:36px;text-align:center'>{row['Clue']}</div>", unsafe_allow_html=True)
+    st.markdown("## 🧐") # header text
+    st.markdown("---") # divider
+    st.markdown(f"<div style='font-size:36px;text-align:center'>{row['Clue']}</div>", unsafe_allow_html=True) # center question + big text on screen
 
+    # if answer wasn't shown yet, show button
     if not st.session_state.show_answer:
         if st.button("🔁 Flip Card to Reveal Answer"):
             st.session_state.show_answer = True
