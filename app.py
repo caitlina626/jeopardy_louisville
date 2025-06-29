@@ -38,7 +38,7 @@ if st.session_state.selected_clue is not None:
 
     # if answer wasn't shown yet, show button
     if not st.session_state.show_answer:
-        if st.button("🔁 Flip Card to Reveal Answer"):
+        if st.button("🔁 Flip Card to Reveal Answer"): # if button is clicked show answer
             st.session_state.show_answer = True
     else:
         st.markdown(f"<div style='font-size:32px;text-align:center;color:green'>✅ {row['Answer']}</div>", unsafe_allow_html=True)
@@ -51,7 +51,7 @@ if st.session_state.selected_clue is not None:
         st.session_state.show_answer = False
 
 else:
-    # Display category headers
+    # show category headers
     cols = st.columns(len(categories))
     for i, cat in enumerate(categories):
         cols[i].markdown(f"### {cat}")
